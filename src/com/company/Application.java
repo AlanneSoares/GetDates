@@ -1,15 +1,16 @@
 package com.company;
 
+import java.io.*;
 import java.sql.*;
 import java.util.Scanner;
 
 public class Application {
 
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException {
 
         // chamar a classe para ConnectDB ao banco
-        //ConnectDB cdb = new ConnectDB();
-        //cdb.getConnectionDataBase();
+        ConnectDB cdb = new ConnectDB();
+        cdb.getConnectionDataBase();
 
         // declaração de atributo
         Scanner s;
@@ -27,7 +28,8 @@ public class Application {
 
                 System.out.println("\nCampo obrigatório!\n");
                 System.out.print("Nome do(a) Procurador(a): ");
-                s.nextLine();
+                s.next(cdb.getConnectionDataBase());
+                //s.nextLine();
 
             }
 

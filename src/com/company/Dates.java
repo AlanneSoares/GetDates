@@ -3,8 +3,8 @@ package com.company;
 public class Dates {
 
     private String procurador;
-    private int matricula;
-    private int cpf;
+    private long matricula;
+    private String cpf;
 
     public String getProcurador() {
         return procurador;
@@ -14,7 +14,7 @@ public class Dates {
         this.procurador = procurador;
     }
 
-    public int getMatricula() {
+    public long getMatricula() {
         return matricula;
     }
 
@@ -22,11 +22,11 @@ public class Dates {
         this.matricula = matricula;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 }
