@@ -1,24 +1,36 @@
 package com.company;
 
 import java.sql.*;
+import java.util.Scanner;
 
 class ConnectDB {
 
     protected String getConnectionDataBase() throws ClassNotFoundException, SQLException {
 
-        String d;
+        //String d;
 
-        /*ConnectDataBase cdb;
+        ConnectDataBase cdb;
         Connection c;
         PreparedStatement ps;
         ResultSet rs;
+        Scanner s;
 
         cdb = new ConnectDataBase();
+        s = new Scanner(System.in);
 
+        cdb.setQuery(
 
-        cdb.setQuery("select VF.NMFUNCIONARIO,VF.CPF,VF.CDMATRICULA\n" +
-                "from MPRJ.MPRJ_VW_FUNCIONARIO vf\n" +
-                "where CDMATRICULA = '00810399'");
+                "with parm as ( select ? as nome, ? as cpf, ? as matricula from dual) " +
+                        " select  VF.NMFUNCIONARIO,VF.CPF,VF.CDMATRICULA from MPRJ.MPRJ_VW_FUNCIONARIO vf " +
+                        " inner join parm on 1=1 " +
+                        " where VF.CARGO = 'PROCURADOR' " +
+                        " and     VF.CDSITUACAOFUNC = '1' " +
+                        " and VF.CDMATRICULA = nvl(parm.matricula,VF.CDMATRICULA) " +
+                        " and VF.CPF = nvl (parm.cpf,VF.CPF) " +
+                        " and VF.NMFUNCIONARIO like '%'||nvl(parm.nome,VF.NMFUNCIONARIO)||'%' " +
+                        " order by 1,2"
+
+        );
 
         // Drive
         cdb.setDrive("oracle.jdbc.driver.OracleDriver");
@@ -33,19 +45,41 @@ class ConnectDB {
 
             c = DriverManager.getConnection(cdb.getUrl(), cdb.getUsername(), cdb.getPassword());
             ps = c.prepareStatement(cdb.getQuery());
+            ps.setString(1, "");
+            ps.setString(2, "");
+            ps.setString(3, "");
             rs = ps.executeQuery();
 
-            System.out.println(dados());
+            while (rs.next()) {
+
+                String cpf = null;
+                String matricula = null;
+                String nome = null;
+
+                System.out.print("Digite o(a) Procurador(a): ");
+                s.next();
+
+                if (s.next().equals(cpf.toUpperCase())) {
+                    System.out.println(rs.getString(1));
+
+                    System.out.println("\nNome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
+
+                } else if (s.nextLine().equals(0)) {
+                    rs.getString(2);
+                    System.out.println("Nome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
+                }
+
+            }
+
+
+            rs.getRow();
 
         } catch (SQLSyntaxErrorException error) {
             System.out.println(error.getMessage() + " Conexão não sucedida, tente novamnente");
         }
 
         return "";
-    } */
-return "";
     }
-
 
 
     private static void Dados(String d) {
@@ -89,20 +123,3 @@ return "";
                 "from MPRJ.MPRJ_VW_FUNCIONARIO vf\n" + parametroQuery);
     }
 }
-
-
-        /*Dates procurador = new Dates();
-
-        procurador.setCpf("");
-        procurador.setProcurador("");
-        procurador.setMatricula(0);
-
-        return procurador;*/
-
-        //}
-
-    /*List<Dates> procuradores(String likeName){
-
-        String
-        cdb.setQuery("select VF.NMFUNCIONARIO,VF.CPF,VF.CDMATRICULA\n" +
-                "from MPRJ.MPRJ_VW_FUNCIONARIO vf where NMFUNCIONARIO like '"+likeName.toUpperCase()+"'%'"); */

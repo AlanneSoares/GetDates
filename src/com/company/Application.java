@@ -10,23 +10,23 @@ public class Application {
 
         // chamar a classe para ConnectDB ao banco
         ConnectDB cdb = new ConnectDB();
-        cdb.getConnectionDataBase();
+        System.out.println(cdb.getConnectionDataBase());
 
         // declaração de atributo
-        Scanner s;
+        //Scanner s;
 
         // declaração de variável
-        s = new Scanner(System.in);
+        //s = new Scanner(System.in);
 
-        try {
+        //try {
 
-            System.out.print("Nome do(a) Procurador(a): ");
-            System.out.println(s.nextLine());
+        //System.out.print("\nNome do(a) Procurador(a): ");
+        //System.out.println();
 
-            //verifica se o campo está vazio
-            while (s.nextLine().equals("")) {
+        //verifica se o campo está vazio
+        //while (s.nextLine().equals("")) {
 
-                System.out.println("\nCampo obrigatório!\n");
+                /*System.out.println("\nCampo obrigatório!\n");
                 System.out.print("Nome do(a) Procurador(a): ");
                 s.next(cdb.getConnectionDataBase());
                 //s.nextLine();
@@ -38,6 +38,9 @@ public class Application {
             System.out.println("Tente novamente" + e);
 
         }
+
+    }*/
+
 
     }
 }
