@@ -52,27 +52,30 @@ class ConnectDB {
 
             while (rs.next()) {
 
-                String cpf = null;
-                String matricula = null;
-                String nome = null;
-
                 System.out.print("Digite o(a) Procurador(a): ");
                 s.next();
 
-                if (s.next().equals(cpf.toUpperCase())) {
-                    System.out.println(rs.getString(1));
+                if (s.next().equals("")) {
 
+                    System.out.println("Nome: " + rs.getString(1));
                     System.out.println("\nNome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
 
-                } else if (s.nextLine().equals(0)) {
-                    rs.getString(2);
+                } else if (s.next().length() == 11) {
+
+                    System.out.println("CPF: " + rs.getString(2));
                     System.out.println("Nome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
+
+                } else if (s.next().length() <= 8) {
+
+                    System.out.println("Matrícula: " + rs.getString(3));
+                    System.out.println("Nome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
+
+                } else {
+
+                    System.out.println("Nada encontrado!");
+
                 }
-
             }
-
-
-            rs.getRow();
 
         } catch (SQLSyntaxErrorException error) {
             System.out.println(error.getMessage() + " Conexão não sucedida, tente novamnente");
