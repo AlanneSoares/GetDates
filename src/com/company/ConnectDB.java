@@ -15,8 +15,19 @@ class ConnectDB {
         ResultSet rs;
         Scanner s;
 
+        String procurador;
+        String space;
+
+        boolean isNumber;
+        boolean isWords;
+
+        long matricula;
+        long cpf;
+
         cdb = new ConnectDataBase();
         s = new Scanner(System.in);
+        space = " ";
+
 
         cdb.setQuery(
 
@@ -52,77 +63,77 @@ class ConnectDB {
 
             while (rs.next()) {
 
-                System.out.print("Digite o(a) Procurador(a): ");
-                s.next();
+                System.out.print("Procurador(a): ");
+                procurador = s.nextLine();
 
-                if (s.next().equals("")) {
 
-                    System.out.println("Nome: " + rs.getString(1));
-                    System.out.println("\nNome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
+                // Verifica se o campo está vazio
+                while (procurador.equals("")) {
+                    System.out.println("\nCampo obrigatório!\n");
 
-                } else if (s.next().length() == 11) {
+                    System.out.print("\nProcurador(a): ");
+                    procurador = s.nextLine();
 
-                    System.out.println("CPF: " + rs.getString(2));
-                    System.out.println("Nome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
+                } // ok funcionando
 
-                } else if (s.next().length() <= 8) {
+
+                // Verifica se os dados digitados é nome completo, sendo assim se conter espaços, identificará que é Nome Completo
+
+                int array[] = new int[0];
+
+                while (procurador.contains(array.toString()) && procurador.length() <= 8) {
+
+                    for (int i = 0; i < 8; i++) {
+
+                        System.out.println("Matrícula" + i);
+
+                    }
+
+                    //System.out.println("Nome: " + rs.getString(1));
+                    //System.out.println("\nNome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
+
+
+                    // SE DIGITAR MATRÍCULA
+
+                    // Se for um número e menor ou igual a 8 dígitos  -> considerar matrícula
+
+                    while (!(procurador.length() <= 8)) {
+                        System.out.println("\nInválido! Digite o nome completo ou CPF ou Matrícula");
+
+                        System.out.println("\nProcurador: ");
+                        procurador = s.next();
+
+                    }
 
                     System.out.println("Matrícula: " + rs.getString(3));
                     System.out.println("Nome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
 
-                } else {
 
-                    System.out.println("Nada encontrado!");
+                    // SE DIGITAR CPF
 
+                    // Se maior que 8 até 11 -> considerar cpf
+
+                    while (!(procurador.length() == 11)) {
+                        System.out.println("\nInválido! Digite o nome completo ou CPF ou Matrícula\n");
+
+                        System.out.println("\nProcurador: ");
+                        procurador = s.nextLine();
+
+                        System.out.println("Nome: ");
+                        System.out.println("CPF: " + rs.getString(2));
+                    }
+
+                    while ((!procurador.contains(space)) && procurador.length() <= 8 && procurador.length() == 11) {
+
+                        System.out.println("Nome: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3));
+                    }
                 }
             }
 
         } catch (SQLSyntaxErrorException error) {
-            System.out.println(error.getMessage() + " Conexão não sucedida, tente novamnente");
+            System.out.println(error.getMessage() + " Conexão não sucedida, tente novamente");
         }
 
         return "";
-    }
-
-
-    private static void Dados(String d) {
-
-        ConnectDataBase cdb;
-        Connection c;
-
-        PreparedStatement ps;
-        ResultSet rs;
-
-        cdb = new ConnectDataBase();
-
-        String parametroQuery = null;
-        boolean isNumero = true;
-
-        try {
-
-            Integer.parseInt(d);
-
-        } catch (Exception e) {
-
-            isNumero = false;
-
-        }
-
-        if (isNumero && d.length() <= 8) {
-
-            parametroQuery = "where CDMATRICULA ='" + d;
-
-        } else if (isNumero && d.length() <= 11) {
-
-            parametroQuery = "where CPF ='" + d;
-
-        } else {
-
-            //procuradores(parametro);
-
-        }
-
-        cdb.setQuery("select VF.NMFUNCIONARIO,VF.CPF,VF.CDMATRICULA\n" +
-                "from MPRJ.MPRJ_VW_FUNCIONARIO vf\n" + parametroQuery);
     }
 }
