@@ -16,17 +16,14 @@ class ConnectDB {
         Scanner s;
 
         String procurador;
-        String space;
+        String matricula;
+        String cpf;
 
         boolean isNumber;
         boolean isWords;
 
-        long matricula;
-        long cpf;
-
         cdb = new ConnectDataBase();
         s = new Scanner(System.in);
-        space = " ";
 
 
         cdb.setQuery(
@@ -55,7 +52,7 @@ class ConnectDB {
 
             c = DriverManager.getConnection(cdb.getUrl(), cdb.getUsername(), cdb.getPassword());
             ps = c.prepareStatement(cdb.getQuery());
-            ps.setString(1, "");
+            ps.setString(1, "A");
             ps.setString(2, "");
             ps.setString(3, "");
             rs = ps.executeQuery();
@@ -64,18 +61,43 @@ class ConnectDB {
 
                 System.out.print("Procurador(a): ");
                 procurador = s.nextLine();
+                matricula = s.next();
 
                 while (procurador.isEmpty()) {
                     System.out.println("\nCampo obrigatório!");
+
                     System.out.print("\nProcurador(a): ");
                     procurador = s.nextLine() + "\n";
+
                 }
 
-                //System.out.println(rs.getString(1));
+                while (procurador.contains(" ")) {
 
+                    System.out.println("Nome completo");
+                    procurador = s.nextLine();
+
+                }
+
+                // para ser número deverá fazer com que não tenha espaço mas o nome completo tem espaço.
+                //while (procurador) {
+
+                System.out.println("Matricula digitada");
+
+                System.out.println("\n" + matricula);
             }
 
 
+                /*while (!procurador.contains(" ")) {
+
+                        System.out.println("O nome deverá ser completo");
+
+                        System.out.print("\nProcurador(a): ");
+                        procurador = s.nextLine() + "\n";
+                }
+
+                while () {
+
+                }*/
 
 
         } catch (Exception e) {
