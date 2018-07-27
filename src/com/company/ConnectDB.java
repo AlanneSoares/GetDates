@@ -49,7 +49,6 @@ class ConnectDB {
         cdb.setUsername("TJRJ_WEBSERVICE_CON");
         cdb.setPassword("TJRJ_WEBSERVICE_CON");
 
-
         try {
 
             Class.forName(cdb.getDrive());
@@ -62,6 +61,33 @@ class ConnectDB {
             rs = ps.executeQuery();
 
             while (rs.next()) {
+
+                System.out.print("Procurador(a): ");
+                procurador = s.nextLine();
+
+                while (procurador.isEmpty()) {
+                    System.out.println("\nCampo obrigatório!");
+                    System.out.print("\nProcurador(a): ");
+                    procurador = s.nextLine() + "\n";
+                }
+
+                //System.out.println(rs.getString(1));
+
+            }
+
+
+
+
+        } catch (Exception e) {
+            System.out.println("Erro!");
+
+        }
+
+        return "";
+    }
+
+}
+            /*while (rs.next()) {
 
                 System.out.print("Procurador(a): ");
                 procurador = s.nextLine();
@@ -136,4 +162,4 @@ class ConnectDB {
 
         return "";
     }
-}
+} */
