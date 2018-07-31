@@ -1,30 +1,28 @@
 // MY HOME
 
-/* 2º comment
 package com.company;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 class ConnectDB {
 
-    protected String getConnectionDataBase() throws ClassNotFoundException, SQLException {
+    protected String getConnectionDataBase() {
 
         ConnectDataBase cdb;
         Connection c;
         PreparedStatement ps;
         ResultSet rs;
         Scanner s;
-
-        String procurador;
+        String procurador = null;
 
         cdb = new ConnectDataBase();
         s = new Scanner(System.in);
 
-
         try {
 
-            // Drive
             cdb.setDrive("oracle.jdbc.driver.OracleDriver");
             cdb.setUrl("jdbc:oracle:thin:@127.0.0.1:1521:xe");
             cdb.setUsername("SYSTEM");
@@ -32,85 +30,76 @@ class ConnectDB {
             cdb.setQuery("select * from Procurador");
 
             Class.forName(cdb.getDrive());
+
             c = DriverManager.getConnection(cdb.getUrl(), cdb.getUsername(), cdb.getPassword());
-
             ps = c.prepareStatement(cdb.getQuery());
-
-            ps.setString(1, null);
-            ps.setString(2, "");
-            ps.setString(3, "");
-
-            // FUNCIONOU CHAMANDO ASSIM
             rs = ps.executeQuery();
 
             while (rs.next()) {
 
-                // FUNCIONOU ASSIM
-                System.out.println("Nome: " + rs.getString(1) + "CPF: " + rs.getString(2) + " Matrícula: " + rs.getString(3));
+                System.out.println("********************\n" +
+                        "BUSCA FUNCIONÁRIO\n" +
+                        "********************\n" +
+                        "\nDigite o Nome Completo ou CPF ou Matrícula do Funcionário\n");
 
-/* 1º comment   System.out.print("Procurador(a): ");
+                System.out.print("Procurador(a): ");
                 procurador = s.nextLine();
 
                 while (procurador.isEmpty()) {
 
                     System.out.println("\nCampo obrigatório!");
-
                     System.out.print("\nProcurador(a): ");
-                    procurador = s.nextLine() + "\n";
+                    procurador = s.nextLine();
 
                 }
 
                 while (procurador.contains(" ")) {
 
-                    System.out.println("Nome completo: ");
-                    procurador = s.nextLine() + "\n";
+                    System.out.println("\nNome completo digitado\n");
+                    System.out.println("\nNome completo: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3) + "\n");
+                    break;
 
                 }
 
-                while (!procurador.contains(" ")) {
+                while (!procurador.contains(" ") && procurador.length() == 11) {
 
-                    if (procurador.length() <= 8) {
+                    System.out.println("\nCPF digitado\n");
+                    System.out.println("\nNome completo: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3) + "\n");
+                    break;
 
-                        System.out.println("Matrícula: ");
-                        procurador = s.next();
-
-                    } else if (procurador.length() == 11) {
-
-                        System.out.println("CPF: ");
-                        procurador = s.next();
-
-                    } else {
-
-                        System.out.println("Dado inválido");
-
-                        System.out.print("\nProcurador(a): ");
-                        procurador = s.nextLine();
-                    }
                 }
 
-                System.out.println(
-                        "-------------- Resultado -------------" +
-                        "Nome Completo: " + rs.getString(1) +
-                        "CPF: " + rs.getString(2) +
-                        "Matrícula: " + rs.getString(3)
+                while (procurador.length() > 1 && procurador.length() == 8) {
 
-                ); 1º comment encerra aqui
+                    System.out.println("\nMatrícula digitada\n");
+                    System.out.println("\nNome Completo: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3) + "\n");
+                    break;
+                }
+
+                while (procurador.length() < 2)
+                    System.out.println("Inválido, deverá conter no mínimo 2 dígitos");
             }
 
-        } catch (Exception e) {
-            System.out.println("Erro!");
+            while (!(procurador.length() > 1 && procurador.length() == 8)){
+                System.out.println("Não encontrado!");
+            }
 
+        } catch (ClassNotFoundException e1) {
+
+            e1.printStackTrace();
+
+        } catch (SQLException e1) {
+
+            e1.printStackTrace();
         }
-
         return "";
     }
-} */
-
+}
 
 //-----------------------------------------------------------------------------------------------------
 
 
-
+/*
 // MY WORK
 
 package com.company;
@@ -232,4 +221,4 @@ class ConnectDB {
 
         return "";
     }
-}
+} */
