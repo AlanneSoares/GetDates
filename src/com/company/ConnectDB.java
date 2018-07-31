@@ -1,10 +1,9 @@
 // MY HOME
 
+/*
 package com.company;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 class ConnectDB {
@@ -96,16 +95,17 @@ class ConnectDB {
     }
 }
 
+*/
 //-----------------------------------------------------------------------------------------------------
 
 
-/*
 // MY WORK
 
 package com.company;
 
-        import java.sql.*;
-        import java.util.Scanner;
+import java.sql.*;
+import java.util.Scanner;
+
 
 class ConnectDB {
 
@@ -116,7 +116,7 @@ class ConnectDB {
         PreparedStatement ps;
         ResultSet rs;
         Scanner s;
-        String procurador;
+        String procurador = null;
 
         cdb = new ConnectDataBase();
         s = new Scanner(System.in);
@@ -130,14 +130,14 @@ class ConnectDB {
             cdb.setUsername("TJRJ_WEBSERVICE_CON");
             cdb.setPassword("TJRJ_WEBSERVICE_CON");
             cdb.setQuery(
-                            "with parm as ( select ? as nome, ? as cpf, ? as matricula from dual) " +
+                    "with parm as ( select ? as nome, ? as cpf, ? as matricula from dual) " +
                             " select  VF.NMFUNCIONARIO,VF.CPF,VF.CDMATRICULA from MPRJ.MPRJ_VW_FUNCIONARIO vf " +
                             " inner join parm on 1 = 1 " +
                             " where VF.CARGO = 'PROCURADOR' " +
                             " and VF.CDSITUACAOFUNC = '1' " +
                             " and VF.CDMATRICULA = nvl(parm.matricula,VF.CDMATRICULA) " +
                             " and VF.CPF = nvl (parm.cpf,VF.CPF) " +
-                            " and VF.NMFUNCIONARIO like '%' || nvl(parm.nome,VF.NMFUNCIONARIO)||'%' " +
+                            " and VF.NMFUNCIONARIO like '%' || nvl(upper(parm.nome),VF.NMFUNCIONARIO)||'%' " +
                             " order by 1,2"
             );
 
@@ -147,78 +147,89 @@ class ConnectDB {
 
             ps = c.prepareStatement(cdb.getQuery());
 
-                ps.setString(1, null);
-                ps.setString(2, null);
-                ps.setString(3, null);
-                rs = ps.executeQuery();
+            ps.setString(1, null);
+            ps.setString(2, null);
+            ps.setString(3, null);
 
 
-            while (rs.next()) {
+            System.out.println("********************\n" +
+                    "BUSCA FUNCIONÁRIO\n" +
+                    "********************\n" +
+                    "\nDigite o Nome Completo ou CPF ou Matrícula do Funcionário\n");
 
-                //System.out.println("Nome: " + rs.getString(1) + "CPF: " + rs.getString(2) + " Matrícula: " + rs.getString(3));
+            System.out.print("Procurador(a): ");
+            procurador = s.nextLine();
 
-                System.out.print("Procurador(a): ");
+
+            // PARA CAMPO VAZIO
+            while (procurador.isEmpty()) {
+
+                System.out.println("\nCampo obrigatório!");
+                System.out.print("\nProcurador(a): ");
                 procurador = s.nextLine();
 
-                int array[] = new int[0];
-
-                for (int i = 0; i <= array.length; i++) {
-
-                    while (procurador.isEmpty()) {
-
-                        System.out.println("\nCampo obrigatório!");
-
-                        System.out.print("\nProcurador(a): ");
-                        procurador = s.nextLine() + "\n";
-
-                    }
-
-                    while (procurador.contains(" ")) {
-
-                        System.out.println("\nNome completo digitado\n");
-
-                        for (int p = 0; p < procurador.length(); p++) {
-                            //System.out.println("\nNome completo: " + procurador + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3) + "\n");
-                            System.out.println("Procurador " + i);
-                            break;
-                        }
-
-                    }
-
-                    while (!procurador.contains(" ")) {
-
-                        if (procurador.length() == 11) {
-
-                            System.out.println("\nCPF digitado\n");
-                            System.out.println("\nNome completo: " + rs.getString(1) + "\nCPF: " + procurador + "\nMatrícula: " + rs.getString(3) + "\n");
-                            break;
-
-                        } else if (procurador.length() <= 8) {
-
-                            System.out.println("\nMatrícula digitada\n");
-
-
-                                System.out.println("\nNome Completo: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(i) + "\n");
-
-                                break;
-
-                        } else {
-
-                            System.out.println("\nDados inválido");
-                            System.out.print("\nProcurador(a): ");
-                            procurador = s.nextLine();
-                            break;
-
-                        }
-                    }
-                }
             }
 
-        } catch (Exception e) {
-            System.out.println("Erro!");
+            // PARA CAMPO COM ESPAÇO
+            while (procurador.contains(" ")) {
 
+                ps.setString(1, procurador);
+                rs = ps.executeQuery();
+
+                while (rs.next()) {
+
+                    System.out.println("\nNome completo digitado\n");
+                    System.out.println("\nNome completo: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3) + "\n");
+
+                }
+
+                break;
+
+            }
+
+            // PARA CAMPO COM 11 DÍGITOS
+            while (!procurador.contains(" ") && procurador.length() == 11) {
+
+                ps.setString(2, procurador);
+                rs = ps.executeQuery();
+
+                while (rs.next()) {
+
+                    System.out.println("\nCPF digitado\n");
+                    System.out.println("\nNome completo: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3) + "\n");
+
+                }
+
+                break;
+
+            }
+
+            // PARA CAMPO COM 8 DÍGITOS
+            while (procurador.length() > 1 && procurador.length() == 8) {
+
+                ps.setString(3, procurador);
+                rs = ps.executeQuery();
+
+                while (rs.next()) {
+
+                    System.out.println("\nMatrícula digitada\n");
+                    System.out.println("\nNome Completo: " + rs.getString(1) + "\nCPF: " + rs.getString(2) + "\nMatrícula: " + rs.getString(3) + "\n");
+
+                }
+
+                break;
+            }
+
+        } catch (ClassNotFoundException e1) {
+
+            e1.printStackTrace();
+
+        } catch (SQLException e1) {
+
+            e1.printStackTrace();
         }
 
         return "";
+
     }
-} */
+}

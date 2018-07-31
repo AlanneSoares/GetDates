@@ -10,5 +10,6 @@ public class Application {
         // chamar a classe para ConnectDB ao banco
         ConnectDB cdb = new ConnectDB();
         System.out.println(cdb.getConnectionDataBase());
+
     }
 }
